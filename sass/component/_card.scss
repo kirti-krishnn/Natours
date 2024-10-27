@@ -1,0 +1,195 @@
+.cards {
+  display: grid;
+  grid-template-columns: 27rem 27rem 27rem 27rem;
+  column-gap: 8rem;
+  margin: 0 auto;
+  padding: 5rem;
+  margin-top: 15rem;
+  transform: skewY(5deg);
+}
+
+.card {
+  display: flex;
+  flex-direction: column;
+  gap: 2rem;
+  margin: 2rem 0;
+  padding: 2.5rem;
+  background-color: rgba(255, 255, 255, 0.8);
+  border-radius: 2px;
+  text-align: center;
+  transition: all 0.2s;
+
+  &:hover {
+    transform: translateY(-15px) scaleY(1.05);
+    box-shadow: 0 3rem 20rem rgba(255, 255, 255, 0.4);
+  }
+}
+
+.tour {
+  display: grid;
+  grid-template-columns: 1fr 1fr 1fr;
+  gap: 10rem;
+  text-align: center;
+  max-width: 180rem;
+  -moz-perspective: 150rem;
+  perspective: 1500px;
+
+  transform-style: preserve-3d;
+  transition: all 0.5s;
+
+  &__card {
+    box-shadow: 0 0.2rem 5rem rgba(0, 0, 0, 0.4);
+    position: relative;
+    height: 60rem;
+    &--heading {
+      position: absolute;
+      top: 13rem;
+      left: 15rem;
+      font-size: 4.5rem;
+      text-transform: uppercase;
+      padding: 20px 30px;
+      color: white;
+      font-weight: 300;
+      background-image: linear-gradient(
+        to right,
+        rgba($color_primary_medium, 0.8),
+        rgba($color_primary_dark, 0.8)
+      );
+    }
+    &--front,
+    &--back {
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 60rem;
+      backface-visibility: hidden;
+      background-color: white;
+    }
+
+    &--back {
+      color: red;
+      transform: rotateY(180deg);
+    }
+
+    &-inner {
+      position: relative;
+      width: 100%;
+      height: 100%;
+      transform-style: preserve-3d; /* Enable 3D transformations */
+      transition: transform 0.6s; /* Smooth rotation transition */
+    }
+
+    &:hover &-inner {
+      transform: rotateY(180deg); /* Rotate on hover */
+    }
+  }
+}
+
+.tour__card:hover {
+  .tour__card--front {
+    transform: rotateY(-180deg); // Rotate front to show back
+  }
+
+  .tour__card--back {
+    transform: rotateY(0deg); // Show the back when the card is hovered
+  }
+}
+
+.img-container {
+  &--image {
+    height: 23rem;
+    clip-path: polygon(0 0, 100% 0, 100% 85%, 0 100%);
+    width: 100%;
+    background-size: contain;
+    position: relative;
+    margin-bottom: 5rem;
+  }
+  &--gradient-overlay {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 23rem;
+    clip-path: polygon(0 0, 100% 0, 100% 85%, 0 100%);
+    content: "";
+    background-image: linear-gradient(
+      to right,
+      rgba($color_primary_medium, 0.3),
+      rgba($color_primary_dark, 0.3)
+    );
+  }
+}
+/* .tour {
+  display: grid;
+  grid-template-columns: 1fr 1fr 1fr;
+  gap: 10rem;
+  text-align: center;
+  max-width: 180rem;
+
+  &__card {
+    position: relative;
+    perspective: 1500px; 
+    width: 100%;
+    height: 60rem;
+
+    &-inner {
+      position: relative;
+      width: 100%;
+      height: 100%;
+      transform-style: preserve-3d; 
+      transition: transform 0.6s; 
+    }
+
+    &:hover &-inner {
+      transform: rotateY(180deg); 
+    }
+
+    &--front,
+    &--back {
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      backface-visibility: hidden; 
+      box-shadow: 0 0.2rem 5rem rgba(0, 0, 0, 0.4); 
+      background-color: white;
+    }
+
+    &--front {
+      z-index: 2;
+    }
+
+    &--back {
+      transform: rotateY(180deg); 
+      background-color: red;
+    }
+  }
+}
+
+.img-container {
+  &--image {
+    height: 23rem;
+    clip-path: polygon(0 0, 100% 0, 100% 85%, 0 100%);
+    width: 100%;
+    background-size: cover;
+    position: relative;
+    margin-bottom: 5rem;
+  }
+
+  &--gradient-overlay {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 23rem;
+    clip-path: polygon(0 0, 100% 0, 100% 85%, 0 100%);
+    content: "";
+    background-image: linear-gradient(
+      to right,
+      rgba($color_primary_medium, 0.3),
+      rgba($color_primary_dark, 0.3)
+    );
+  }
+} */

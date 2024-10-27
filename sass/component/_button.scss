@@ -1,0 +1,46 @@
+.btn {
+  text-decoration: none;
+  color: $light_dark_grey;
+  font-size: 2rem;
+
+  &--white {
+    display: inline-block;
+    padding: 25px 40px 25px 40px;
+    background-color: $color_white;
+    border-radius: 100px;
+    position: relative;
+
+    &::after {
+      background-color: $color_white;
+    }
+  }
+
+  &:hover::after {
+    transform: scaleX(1.4) scaleY(1.6);
+    opacity: 0;
+  }
+
+  &::after {
+    content: "";
+    position: absolute;
+    height: 100%;
+    width: 100%;
+    top: 0px;
+    left: 0px;
+    z-index: -1;
+    border-radius: 100px;
+    transition: all 0.3s ease-in;
+  }
+}
+
+.btn-text {
+  display: inline-block;
+  margin-top: 4rem;
+  color: #55c57a;
+  font-size: 2rem;
+  text-decoration: none;
+  border: black 3px;
+  padding: 7px;
+  border-bottom: 3px solid #55c57a;
+  max-width: fit-content;
+}
