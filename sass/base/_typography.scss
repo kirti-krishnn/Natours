@@ -1,6 +1,6 @@
 .heading {
   &--main {
-    font-size: 7.1rem;
+    font-size: 5.8rem;
     letter-spacing: 4.5rem;
     font-weight: 400;
     margin-bottom: 3.6rem;
@@ -16,9 +16,10 @@
 
   &--tertiary {
     //padding: 3rem;
+
     margin-bottom: 9.6rem;
     text-align: center;
-    font-size: 4.2rem;
+    font-size: 3.6rem;
     text-transform: uppercase;
     letter-spacing: 3px;
     font-weight: 700;
@@ -29,7 +30,6 @@
     );
     background-clip: text;
     -webkit-background-clip: text;
-    box-shadow: 0 15rem 25rem rgba(0, 0, 0, 0.205);
     color: transparent;
     transition: all 0.2s;
 
@@ -42,7 +42,7 @@
   &-small {
     margin-bottom: 2.4rem;
     text-transform: uppercase;
-    font-size: 1.8rem;
-    font-weight: 600;
+    font-size: 1.44rem;
+    font-weight: 800;
   }
 }

@@ -1,4 +1,7 @@
 .btn {
+  display: inline-block;
+  text-transform: uppercase;
+  text-align: center;
   text-decoration: none;
   color: $light_dark_grey;
   font-size: 2rem;
@@ -43,4 +46,11 @@
   padding: 7px;
   border-bottom: 3px solid #55c57a;
   max-width: fit-content;
+}
+
+.btn-card {
+  margin-top: 10rem;
+  left: 28vw;
+  background-color: #55c57a;
+  color: white;
 }

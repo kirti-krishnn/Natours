@@ -1,0 +1,24 @@
+.booking {
+  background-color: #fff;
+  width: 80%;
+  height: 65%;
+  display: flex; /* Added */
+  justify-content: center; /* Added */
+  align-items: center; /* Added */
+  flex-direction: column;
+  background-image: linear-gradient(
+      105deg,
+      rgba($color-white, 0.9) 0%,
+      rgba($color-white, 0.9) 50%,
+      transparent 50%
+    ),
+    url(../img/nat-10.jpg);
+
+  background-size: cover;
+}
+
+.book {
+  display: flex;
+  justify-content: left;
+  align-items: flex-start;
+}

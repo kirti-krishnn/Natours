@@ -66,3 +66,25 @@
   padding: 25rem 15rem;
   margin-top: -25rem;
 }
+
+.section-stories {
+  background-color: transparent;
+  padding: 18rem 15rem;
+  margin-top: -12rem;
+  position: relative;
+}
+
+.section-booking {
+  height: 120vh;
+
+  background-image: linear-gradient(
+    to right bottom,
+    rgba($color_primary_light, 0.8),
+    rgba($color_primary_dark, 0.8)
+  );
+  background-size: cover;
+
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}

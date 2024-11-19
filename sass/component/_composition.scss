@@ -4,7 +4,7 @@
   &__img {
     width: 55%;
     box-shadow: 0 15px 40px rgba(0, 0, 0, 0.4);
-    border-radius: 3px;
+    border-radius: 5px;
     transition: all 0.2s;
     outline-offset: 2rem;
     z-index: 10;
@@ -17,14 +17,14 @@
 
     &--2 {
       position: absolute;
-      top: 5rem;
-      left: 25rem;
+      top: 3rem;
+      left: 20rem;
     }
 
     &--3 {
       position: absolute;
-      top: 13rem;
-      left: 10rem;
+      top: 9rem;
+      left: 8rem;
     }
 
     &:hover {
