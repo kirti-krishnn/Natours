@@ -552,10 +552,10 @@ html {
 
 .form {
   width: 100%;
+  margin-top: -3.6rem;
 }
 .form-group {
   font-family: inherit;
-  margin-bottom: 2.2rem;
 }
 .form-name {
   outline: none;
@@ -589,8 +589,7 @@ html {
 }
 .form-label {
   width: 90%;
-  margin-bottom: 3rem;
-  padding-bottom: 4rem;
+  margin-bottom: 1.5rem;
   padding-left: 1.5rem;
   display: block;
   transition: all 0.4s;
@@ -622,6 +621,16 @@ html {
   opacity: 0;
   visibility: hidden;
   transform: translateY(-4.5rem);
+}
+
+.radio-group {
+  padding-top: 3rem;
+  display: inline-block;
+}
+
+.radio-label {
+  margin-right: 8rem;
+  margin-left: 2.5rem;
 }
 
 .section-about {

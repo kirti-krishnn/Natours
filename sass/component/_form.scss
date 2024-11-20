@@ -26,9 +26,10 @@
 
 .form {
   width: 100%;
+  margin-top: -3.6rem;
   &-group {
     font-family: inherit;
-    margin-bottom: 2.2rem;
+    // margin-bottom: 1.5rem;
   }
 
   &-name {
@@ -59,8 +60,8 @@
   }
   &-label {
     width: 90%;
-    margin-bottom: 3rem;
-    padding-bottom: 4rem;
+    margin-bottom: 1.5rem;
+    // padding-bottom: 4rem;
     padding-left: 1.5rem;
     //margin-top: -4.5rem;
     display: block;
@@ -90,4 +91,13 @@
     visibility: hidden;
     transform: translateY(-4.5rem);
   }
+}
+
+.radio-group {
+  padding-top: 3rem;
+  display: inline-block;
+}
+.radio-label {
+  margin-right: 8rem;
+  margin-left: 2.5rem;
 }
