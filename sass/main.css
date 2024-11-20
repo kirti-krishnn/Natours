@@ -535,17 +535,93 @@ html {
   width: 80%;
   height: 65%;
   display: flex; /* Added */
-  justify-content: center; /* Added */
-  align-items: center; /* Added */
+  justify-content: flex-start; /* Added */
+  align-items: flex-start; /* Added */
   flex-direction: column;
   background-image: linear-gradient(105deg, rgba(255, 255, 255, 0.9) 0%, rgba(255, 255, 255, 0.9) 50%, transparent 50%), url(../img/nat-10.jpg);
   background-size: cover;
 }
 
-.book {
-  display: flex;
-  justify-content: left;
-  align-items: flex-start;
+.padding-medium {
+  padding-left: 6rem;
+}
+
+.padding-top {
+  padding-top: 6rem;
+}
+
+.form {
+  width: 100%;
+}
+.form-group {
+  font-family: inherit;
+  margin-bottom: 2.2rem;
+}
+.form-name {
+  outline: none;
+  font-family: inherit;
+  width: 90%;
+  padding: 1.5rem;
+  border-radius: 3px;
+  border: none;
+  border-bottom: 3px solid transparent;
+  margin-bottom: 1rem;
+  font-size: inherit;
+  display: block;
+}
+.form-name:focus {
+  outline: none;
+  box-shadow: 0 2rem 3rem rgba(0, 0, 0, 0.1);
+  border-bottom: 3px solid #55c57a;
+}
+.form-name:focus:invalid {
+  border-bottom: 3px solid #ff7730;
+}
+.form-name:-moz-placeholder-shown + .form-label {
+  opacity: 0;
+  visibility: hidden;
+  transform: translateY(-4.5rem);
+}
+.form-name:placeholder-shown + .form-label {
+  opacity: 0;
+  visibility: hidden;
+  transform: translateY(-4.5rem);
+}
+.form-label {
+  width: 90%;
+  margin-bottom: 3rem;
+  padding-bottom: 4rem;
+  padding-left: 1.5rem;
+  display: block;
+  transition: all 0.4s;
+}
+.form-email {
+  font-family: inherit;
+  font-size: inherit;
+  width: 90%;
+  padding: 1.5rem;
+  border-radius: 3px;
+  border: none;
+  border-bottom: 3px solid transparent;
+  margin-bottom: 1rem;
+}
+.form-email:focus {
+  outline: none;
+  box-shadow: 0 2rem 3rem rgba(0, 0, 0, 0.1);
+  border-bottom: 3px solid #55c57a;
+}
+.form-email:focus:invalid {
+  border-bottom: 3px solid #ff7730;
+}
+.form-email:-moz-placeholder-shown + .form-label {
+  opacity: 0;
+  visibility: hidden;
+  transform: translateY(-4.5rem);
+}
+.form-email:placeholder-shown + .form-label {
+  opacity: 0;
+  visibility: hidden;
+  transform: translateY(-4.5rem);
 }
 
 .section-about {
