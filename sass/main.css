@@ -552,7 +552,7 @@ html {
 
 .form {
   width: 100%;
-  margin-top: -3.6rem;
+  margin-top: -1.6rem;
 }
 .form-group {
   font-family: inherit;
@@ -561,11 +561,11 @@ html {
   outline: none;
   font-family: inherit;
   width: 90%;
-  padding: 1.5rem;
+  padding: 1.2rem;
   border-radius: 3px;
   border: none;
   border-bottom: 3px solid transparent;
-  margin-bottom: 1rem;
+  margin-bottom: 2rem;
   font-size: inherit;
   display: block;
 }
@@ -598,7 +598,7 @@ html {
   font-family: inherit;
   font-size: inherit;
   width: 90%;
-  padding: 1.5rem;
+  padding: 1.2rem;
   border-radius: 3px;
   border: none;
   border-bottom: 3px solid transparent;
@@ -624,13 +624,46 @@ html {
 }
 
 .radio-group {
-  padding-top: 3rem;
+  padding-top: 2rem;
   display: inline-block;
 }
 
 .radio-label {
-  margin-right: 8rem;
-  margin-left: 2.5rem;
+  margin-right: 4.5rem;
+}
+
+.radio-input {
+  opacity: 0;
+  visibility: hidden;
+}
+
+.radio-button {
+  height: 3rem;
+  width: 3rem;
+  border-radius: 50%;
+  border: 5px solid #55c57a;
+  display: inline-block;
+  transform: translateY(1rem);
+  margin-right: 1.5rem;
+  position: relative;
+}
+.radio-button::after {
+  content: "";
+  display: block;
+  height: 1.3rem;
+  width: 1.3rem;
+  border-radius: 50%;
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  background-color: #55c57a;
+  opacity: 0;
+  transition: opacity 0.2s;
+}
+
+.radio-input:checked ~ .radio-label .radio-button::after {
+  opacity: 1;
 }
 
 .section-about {
