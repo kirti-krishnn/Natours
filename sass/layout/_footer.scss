@@ -1,0 +1,40 @@
+.footer {
+  background-color: #333;
+  height: 75vh;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  flex-direction: column;
+  gap: 5rem;
+
+  &-logo {
+    &-img {
+      height: 15rem;
+    }
+    margin-bottom: 4rem;
+  }
+  &-base {
+    display: flex;
+    justify-content: space-between;
+    margin-left: 14rem;
+    gap: 15rem;
+  }
+  &-list {
+    width: 100%;
+    display: flex;
+    gap: 3rem;
+    list-style: none;
+    text-transform: uppercase;
+    font-size: inherit;
+    padding-top: 2rem;
+    border-top: 3px solid #ccc;
+  }
+  &-note {
+    margin-left: 28rem;
+    width: 50%;
+    font-size: 1.8rem;
+    color: #ccc;
+    padding-top: 2rem;
+    border-top: 2px solid #ccc;
+  }
+}

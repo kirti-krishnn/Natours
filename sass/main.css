@@ -110,6 +110,46 @@ html {
   flex-direction: column;
 }
 
+.footer {
+  background-color: #333;
+  height: 75vh;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  flex-direction: column;
+  gap: 5rem;
+}
+.footer-logo {
+  margin-bottom: 4rem;
+}
+.footer-logo-img {
+  height: 15rem;
+}
+.footer-base {
+  display: flex;
+  justify-content: space-between;
+  margin-left: 14rem;
+  gap: 15rem;
+}
+.footer-list {
+  width: 100%;
+  display: flex;
+  gap: 3rem;
+  list-style: none;
+  text-transform: uppercase;
+  font-size: inherit;
+  padding-top: 2rem;
+  border-top: 3px solid #ccc;
+}
+.footer-note {
+  margin-left: 28rem;
+  width: 50%;
+  font-size: 1.8rem;
+  color: #ccc;
+  padding-top: 2rem;
+  border-top: 2px solid #ccc;
+}
+
 .btn {
   display: inline-block;
   text-transform: uppercase;
@@ -117,6 +157,7 @@ html {
   text-decoration: none;
   color: #777;
   font-size: 2rem;
+  border: none;
 }
 .btn--white {
   display: inline-block;
@@ -162,6 +203,19 @@ html {
   left: 28vw;
   background-color: #55c57a;
   color: white;
+}
+
+.btn-next-steps {
+  padding: 2rem 3rem;
+  background-color: #55c57a;
+  color: #fff;
+  border-radius: 30px;
+  border: none;
+  margin-top: 6rem;
+  display: inline-block;
+  text-transform: uppercase;
+  text-decoration: none;
+  font-size: inherit;
 }
 
 .composition {

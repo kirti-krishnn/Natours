@@ -5,6 +5,7 @@
   text-decoration: none;
   color: $light_dark_grey;
   font-size: 2rem;
+  border: none;
 
   &--white {
     display: inline-block;
@@ -14,7 +15,7 @@
     position: relative;
 
     &::after {
-      background-color: $color_white;
+      background-color: $color-white;
     }
   }
 
@@ -53,4 +54,17 @@
   left: 28vw;
   background-color: #55c57a;
   color: white;
+}
+
+.btn-next-steps {
+  padding: 2rem 3rem;
+  background-color: $color_primary_medium;
+  color: $color_white;
+  border-radius: 30px;
+  border: none;
+  margin-top: 6rem;
+  display: inline-block;
+  text-transform: uppercase;
+  text-decoration: none;
+  font-size: inherit;
 }
