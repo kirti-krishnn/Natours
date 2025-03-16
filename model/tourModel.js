@@ -97,4 +97,29 @@ const tourModel = new mongoose.Schema(
   }
 );
 
-module.exports = tourModel;
+tourModel.virtual('durationWeek').get(function () {
+  return duration / 7;
+});
+
+tourModel.pre('save', async function (next) {
+  this.slug = slugify(this.name, { lower: true });
+  next();
+});
+tourModel.pre('/^find/', async function (next) {
+  this.find({ secretTour: { $ne: true } });
+  this.start = Date.now();
+  next();
+});
+
+tourModel.post('/^find/', async function (docs, next) {
+  console.log(`The Query took ${Date.now() - this.start} milliseconds!`);
+  next();
+});
+
+tourModel.pre('aggregate', function (next) {
+  this.pipeline().unshift({ secretTour: { ne: true } });
+  next();
+});
+
+const Tour = mongoose.model('Tour', tourModel);
+module.exports = Tour;
