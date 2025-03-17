@@ -1,4 +1,4 @@
-class APIFeatures {
+class apiFeatures {
   constructor(query, queryString) {
     this.query = query;
     this.queryString = queryString;
@@ -6,7 +6,7 @@ class APIFeatures {
 
   filter() {
     const excludedField = ['page', 'limit', 'sort', 'fields'];
-    const queryObj = { ...this.query };
+    const queryObj = { ...this.queryString };
 
     excludedField.forEach((el) => delete queryObj[el]);
 
@@ -27,4 +27,24 @@ class APIFeatures {
       this.query = this.query.sort('-createdAt');
     }
   }
+
+  limit() {
+    if (this.queryString.fields) {
+      let fields = this.queryString.fields.split(',').join(' ');
+      this.query = this.query.select(fields);
+      return this;
+    } else {
+      this.query = this.query.select('-__v');
+    }
+  }
+  paginate() {
+    const page = this.queryString.page * 1 || 1;
+    const limit = this.queryString.limit * 1 || 100;
+    const skip = (page - 1) * limit;
+
+    this.query = this.query.skip(skip).limit(limit);
+    return this;
+  }
 }
+
+module.exports = apiFeatures;

@@ -16,5 +16,8 @@
     "mongoose": "^8.12.1",
     "slugify": "^1.6.6",
     "validator": "^13.12.0"
+  },
+  "devDependencies": {
+    "case-sensitive-paths-webpack-plugin": "^2.4.0"
   }
 }
