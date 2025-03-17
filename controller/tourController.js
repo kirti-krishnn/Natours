@@ -1,4 +1,4 @@
-const tour = require('../model/tourModel');
+const Tour = require('../model/tourModel');
 const APIFeatures = require('../utils/apiFeatures');
 
 exports.aliasTopFiveTours = (req, res, next) => {
@@ -10,7 +10,7 @@ exports.aliasTopFiveTours = (req, res, next) => {
 
 exports.getAllTours = async (req, res) => {
   try {
-    const features = new APIFeatures(tour.find(), req.query)
+    const features = new APIFeatures(Tour.find(), req.query)
       .filter()
       .limit()
       .sort()
@@ -27,8 +27,81 @@ exports.getAllTours = async (req, res) => {
     });
   } catch (err) {
     res.status(404).json({
-      error: err,
       message: 'fail',
+      error: err,
+    });
+  }
+};
+
+exports.getTour = async (req, res) => {
+  try {
+    const id = req.params.id;
+    const tour = await Tour.findById(id);
+    res.status(200).json({
+      status: 'success',
+      data: {
+        tour,
+      },
+    });
+  } catch (err) {
+    res.status(404).json({
+      message: 'fail',
+      error: err,
+    });
+  }
+};
+
+exports.createTour = async (req, res) => {
+  try {
+    const tour = await Tour.create(req.data);
+    res.status(200).json({
+      status: 'success',
+      data: {
+        tour,
+      },
+    });
+  } catch (err) {
+    res.status(404).json({
+      message: 'fail',
+      error: err,
+    });
+  }
+};
+
+exports.updateTour = async (req, res) => {
+  try {
+    const tour = await Tour.findByIdAndUpdate(req.params.id, req.body, {
+      new: true,
+      runValidators: true,
+    });
+
+    res.status(200).json({
+      message: 'success',
+      data: {
+        tour,
+      },
+    });
+  } catch (err) {
+    res.status(404).json({
+      message: 'fail',
+      error: err,
+    });
+  }
+};
+
+exports.deleteTour = async (req, res) => {
+  try {
+    const tour = await Tour.findByIdAndDelete(req.params.id);
+    res.status(200).json({
+      message: 'success',
+      data: {
+        tour,
+      },
+    });
+  } catch (err) {
+    res.status(404).json({
+      message: 'fail',
+      error: 'err',
     });
   }
 };
