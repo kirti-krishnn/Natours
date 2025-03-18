@@ -16,6 +16,9 @@ exports.getAllTours = async (req, res) => {
       .sort()
       .paginate();
 
+    console.log('🔍 Received Query Params:', req.query);
+    console.log('✅ Mongoose Query Object:', features.query.toString());
+
     const tours = await features.query;
 
     res.status(200).json({
@@ -29,6 +32,7 @@ exports.getAllTours = async (req, res) => {
     res.status(404).json({
       message: 'fail',
       error: err,
+      name: 'kirti krishnn',
     });
   }
 };
@@ -53,7 +57,7 @@ exports.getTour = async (req, res) => {
 
 exports.createTour = async (req, res) => {
   try {
-    const tour = await Tour.create(req.data);
+    const tour = await Tour.create(req.body);
     res.status(200).json({
       status: 'success',
       data: {
@@ -101,7 +105,7 @@ exports.deleteTour = async (req, res) => {
   } catch (err) {
     res.status(404).json({
       message: 'fail',
-      error: 'err',
+      error: err,
     });
   }
 };

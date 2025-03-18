@@ -1,4 +1,5 @@
 const mongoose = require('mongoose');
+const slugify = require('slugify');
 
 const tourModel = new mongoose.Schema(
   {
@@ -19,7 +20,7 @@ const tourModel = new mongoose.Schema(
         validator: (val) => {
           return val < 30;
         },
-        message: `duration should be less than 30 days. Given ${props.value}`,
+        message: `duration should be less than 30 days. Given ${this.value}`,
       },
     },
     maxGroupSize: {
@@ -48,12 +49,12 @@ const tourModel = new mongoose.Schema(
     price: {
       type: Number,
       required: [true, 'A tour cannot be without a price'],
-      validate: {
+      /* validate: {
         validator: function (val) {
           return val < 0;
         },
         message: 'Price cannot be negative.',
-      },
+      }, */
     },
     priceDiscount: {
       type: Number,
@@ -98,26 +99,26 @@ const tourModel = new mongoose.Schema(
 );
 
 tourModel.virtual('durationWeek').get(function () {
-  return duration / 7;
+  return this.duration / 7;
 });
 
 tourModel.pre('save', async function (next) {
   this.slug = slugify(this.name, { lower: true });
   next();
 });
-tourModel.pre('/^find/', async function (next) {
+tourModel.pre(/^find/, async function (next) {
   this.find({ secretTour: { $ne: true } });
   this.start = Date.now();
   next();
 });
 
-tourModel.post('/^find/', async function (docs, next) {
+tourModel.post(/^find/, async function (docs, next) {
   console.log(`The Query took ${Date.now() - this.start} milliseconds!`);
   next();
 });
 
 tourModel.pre('aggregate', function (next) {
-  this.pipeline().unshift({ secretTour: { ne: true } });
+  this.pipeline().unshift({ $match: { secretTour: { $ne: true } } });
   next();
 });
 

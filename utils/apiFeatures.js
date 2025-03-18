@@ -9,11 +9,8 @@ class apiFeatures {
     const queryObj = { ...this.queryString };
 
     excludedField.forEach((el) => delete queryObj[el]);
-
     let queryStr = JSON.stringify(queryObj);
-
     queryStr = queryStr.replace(/\b(gte|gt|lte|lt)\b/g, (match) => `$${match}`);
-
     this.query = this.query.find(JSON.parse(queryStr));
     return this;
   }
@@ -25,6 +22,7 @@ class apiFeatures {
       return this;
     } else {
       this.query = this.query.sort('-createdAt');
+      return this;
     }
   }
 
@@ -35,6 +33,7 @@ class apiFeatures {
       return this;
     } else {
       this.query = this.query.select('-__v');
+      return this;
     }
   }
   paginate() {
