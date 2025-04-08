@@ -6,14 +6,15 @@ const handleCastErrorDB = (err) => {
 };
 
 const handleDuplicateErrorDB = (err) => {
-  const value = err.errmsg.match(/(["'])(\\?.)*?\1/)[0];
-  console.log(value);
+  const value = err.keyValue
+    ? Object.values(err.keyValue).join(', ')
+    : 'Duplicate field';
 
   const message = `Duplicate field value: ${value}. Please use another value!`;
   return new AppError(message, 400);
 };
 
-const handleValidatorErrorDB = (err) => {
+const handleValidationErrorDB = (err) => {
   const errors = Object.values(err.errors).map((el) => el.message);
 
   const message = `Invalid input data. ${errors.join('. ')}`;
@@ -54,27 +55,16 @@ module.exports = (err, req, res, next) => {
   err.statusCode = err.statusCode || 500;
   err.status = err.status || 'Error';
 
-  if ((process.env.NODE_ENV = 'development')) sendErrorDev(err, res);
-  else if ((process.env.NODE_ENV = 'production')) {
-    let error = { ...err };
+  if (process.env.NODE_ENV === 'development') sendErrorDev(err, res);
+  else if (process.env.NODE_ENV === 'production') {
+    let error = Object.create(err);
     console.log(error);
 
     if (error.name === 'CastError') error = handleCastErrorDB(error);
     if (error.code === 11000) error = handleDuplicateErrorDB(error);
-    if (error.name === 'ValidationError') error = handleValidatorErrorDB(error);
-    sendErrorProd(err, res);
+    if (error.name === 'ValidationError')
+      error = handleValidationErrorDB(error);
+
+    sendErrorProd(error, res);
   }
-
-  res.status(err.statusCode).json({
-    status: err.status,
-    message: err.message,
-  });
-  /* let error = { ...err };
-
-  console.log(error.errors.name); */
-  /*  if (process.env.NODE_ENV === 'development') sendErrorDev(err, res); */
-
-  //if (process.env.NODE_ENV === 'production') {
-
-  // }
 };
