@@ -88,7 +88,7 @@ exports.deleteTour = catchAsync(async (req, res) => {
   });
 });
 
-exports.getStats = catchAsync(async (req, res) => {
+exports.getStats = catchAsync(async (req, res, next) => {
   const stats = await Tour.aggregate([
     {
       $match: { ratingsAverage: { $gte: 4.5 } },
@@ -106,9 +106,18 @@ exports.getStats = catchAsync(async (req, res) => {
     },
     { $sort: { avgPrice: 1 } },
   ]);
+
+  res.status(200).json({
+    status: 'success',
+    data: {
+      stats,
+    },
+  });
 });
 
-exports.getMonthlyStats = catchAsync(async (req, res) => {
+exports.getMonthlyStats = catchAsync(async (req, res, next) => {
+  const year = req.params.year * 1;
+
   const MonthlyStats = await Tour.aggregate([
     { $unwind: '$startDates' },
     {
@@ -121,7 +130,7 @@ exports.getMonthlyStats = catchAsync(async (req, res) => {
     },
     {
       $group: {
-        _id: { $monthly: '$startDates' },
+        _id: { $month: '$startDates' },
         numStartTours: { $sum: 1 },
         tours: { $push: '$name' },
       },
