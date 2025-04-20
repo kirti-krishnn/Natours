@@ -1,5 +1,7 @@
 const mongoose = require('mongoose');
+const crypto = require('crypto');
 const validator = require('validator');
+const bcrypt = require('bcryptjs');
 
 const userSchema = new mongoose.Schema({
   name: {
@@ -29,6 +31,20 @@ const userSchema = new mongoose.Schema({
       'Please rewrite the password in the PasswordConfirm field.',
     ],
     trim: true,
+    validate: {
+      validator: function (val) {
+        return val === this.password;
+      },
+      message: 'the password does not match.',
+    },
+  },
+  roles: {
+    type: String,
+    enum: {
+      values: ['admin', 'lead-guide', 'guide', 'user'],
+      message: 'the user needs to have a role',
+    },
+    default: 'user',
   },
   passwordChangedAt: Date,
   passwordResetToken: String,
@@ -40,5 +56,46 @@ const userSchema = new mongoose.Schema({
   },
 });
 
-const User = mongoose.Model('User', userSchema);
+userSchema.pre('save', async function (next) {
+  if (!this.isModified('password')) return next();
+  this.password = await bcrypt.hash(this.password, 12);
+  this.passwordConfirm = undefined;
+  next();
+});
+
+userSchema.methods.passwordCompare = async function (
+  candidatePassword,
+  userPassword
+) {
+  return await bcrypt.compare(candidatePassword, userPassword);
+};
+
+userSchema.methods.changedPasswordAfter = function (tokenIssuedTime) {
+  if (this.passwordChangedAt) {
+    const changedTimestamp = parseInt(
+      this.passwordChangedAt.getTime() / 1000,
+      10
+    );
+
+    console.log('kirti');
+
+    return changedTimestamp > tokenIssuedTime;
+  }
+
+  return false;
+};
+
+userSchema.methods.createPasswordResetToken = function () {
+  const resetToken = crypto.randomBytes(32).toString(hex);
+  this.passwordResetToken = crypto
+    .createHash('sha256')
+    .update(resetToken)
+    .digest('hex');
+
+  this.passwordResetExpires = Date.now() + 10 * 60 * 1000;
+
+  return resetToken;
+};
+
+const User = mongoose.model('User', userSchema);
 module.exports = User;

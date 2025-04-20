@@ -1,5 +1,15 @@
 const User = require('../model/userModel');
 const catchAsync = require('../utils/catchAsync');
+const jwt = require('jsonwebtoken');
+const AppError = require('../utils/appError');
+const { promisify } = require('util');
+const { decode } = require('punycode');
+
+const signToken = function (val) {
+  return jwt.sign({ val }, process.env.JWT_SECRET_CODE, {
+    expiresIn: process.env.JWT_EXPIRES_IN,
+  });
+};
 
 exports.signUp = catchAsync(async (req, res, next) => {
   const user = await User.create({
@@ -8,4 +18,93 @@ exports.signUp = catchAsync(async (req, res, next) => {
     password: req.body.password,
     passwordConfirm: req.body.passwordConfirm,
   });
+  const token = signToken(user.id);
+  res.status(200).json({
+    status: 'success',
+    token,
+    data: {
+      user,
+    },
+  });
+});
+
+exports.login = catchAsync(async (req, res, next) => {
+  const { email, password } = req.body;
+  if (!email || !password) {
+    next(new AppError('please provide email and password both', 404));
+  }
+  const user = await User.findOne({ email }).select('+password');
+  if (!user) {
+    return next(new AppError('the email doesnt exists', 404));
+  }
+  console.log(user.password);
+
+  const isMatch = await user.passwordCompare(password, user.password);
+
+  if (!isMatch) {
+    return next(new AppError('password doesnt match', 404));
+  }
+
+  const token = signToken(user.id);
+
+  res.status(200).json({
+    token,
+    data: {
+      status: 'success',
+      user,
+    },
+  });
+});
+
+exports.protect = catchAsync(async (req, res, next) => {
+  let token;
+  if (
+    req.headers.authorization &&
+    req.headers.authorization.startsWith('Bearer')
+  ) {
+    token = req.headers.authorization.split(' ')[1];
+  }
+
+  const decoded = await promisify(jwt.verify)(token, 'ilovemyself');
+  console.log('decoded: ', decoded);
+
+  const user = await User.findById(decoded.val);
+
+  if (!user) {
+    return next(new AppError('The user no longer exists'));
+  }
+  console.log(user);
+  console.log(typeof user.changedPasswordAfter); // should be "function"
+
+  if (user.changedPasswordAfter(decode.iat))
+    return next(new AppError('The password has changed .Login again!'), 401);
+
+  req.user = user;
+  next();
+});
+
+exports.restrictTo = (...roles) =>
+  catchAsync(async (req, res, next) => {
+    if (!roles.includes(req.user.roles)) {
+      return next(
+        new AppError(
+          'The user doesnot have the permission to perform admin operations',
+          401
+        )
+      );
+    }
+    next();
+  });
+
+exports.forgotPassword = catchAsync(async (req, res, next) => {
+  const user = await User.findOne(req.body.email);
+  if (!user) {
+    return next(
+      new AppError('The user does not exists. Enter a valid email id', 401)
+    );
+  }
+
+  const resetToken = user.createPasswordResetToken();
+
+  await user.save({ validateBeforeSave: false });
 });
