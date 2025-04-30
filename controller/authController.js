@@ -73,8 +73,8 @@ exports.protect = catchAsync(async (req, res, next) => {
   if (!user) {
     return next(new AppError('The user no longer exists'));
   }
-  console.log(user);
-  console.log(typeof user.changedPasswordAfter); // should be "function"
+  /* console.log(user);
+  console.log(typeof user.changedPasswordAfter); // should be "function" */
 
   if (user.changedPasswordAfter(decode.iat))
     return next(new AppError('The password has changed .Login again!'), 401);
@@ -97,7 +97,7 @@ exports.restrictTo = (...roles) =>
   });
 
 exports.forgotPassword = catchAsync(async (req, res, next) => {
-  const user = await User.findOne(req.body.email);
+  const user = await User.findOne({ email: req.body.email });
   if (!user) {
     return next(
       new AppError('The user does not exists. Enter a valid email id', 401)
@@ -107,4 +107,22 @@ exports.forgotPassword = catchAsync(async (req, res, next) => {
   const resetToken = user.createPasswordResetToken();
 
   await user.save({ validateBeforeSave: false });
+
+  const resetURL = `${req.protocol}://${req.get(
+    'host'
+  )}/api/v1/users/resetPassword/${resetToken}`;
+
+  const msg = `Forgot Password? Submit a PATCH request with your new password and passwordConfirm to : ${resetURL}.\n If you did not forget the password then please ignore this email`;
 });
+try {
+} catch (err) {
+  user.passwordReset;
+}
+
+/* exports.resetPassword = catchAsync(async (req, res) => {
+  const user = await User.findOne({ email: req.body.email });
+  //console.log('inside   reset password' + user);
+
+  const resetToken = user.createPasswordResetToken();
+});
+ */
