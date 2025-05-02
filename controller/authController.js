@@ -4,10 +4,22 @@ const jwt = require('jsonwebtoken');
 const AppError = require('../utils/appError');
 const { promisify } = require('util');
 const { decode } = require('punycode');
+const sendEmail = require('../utils/email');
 
 const signToken = function (val) {
   return jwt.sign({ val }, process.env.JWT_SECRET_CODE, {
     expiresIn: process.env.JWT_EXPIRES_IN,
+  });
+};
+
+const createSendToken = function (user, statusCode, res) {
+  const token = signToken(user.id);
+  res.send(statusCode).json({
+    status: 'success',
+    token,
+    data: {
+      user,
+    },
   });
 };
 
@@ -19,13 +31,7 @@ exports.signUp = catchAsync(async (req, res, next) => {
     passwordConfirm: req.body.passwordConfirm,
   });
   const token = signToken(user.id);
-  res.status(200).json({
-    status: 'success',
-    token,
-    data: {
-      user,
-    },
-  });
+  createSendToken(user, 200, res);
 });
 
 exports.login = catchAsync(async (req, res, next) => {
@@ -47,13 +53,7 @@ exports.login = catchAsync(async (req, res, next) => {
 
   const token = signToken(user.id);
 
-  res.status(200).json({
-    token,
-    data: {
-      status: 'success',
-      user,
-    },
-  });
+  createSendToken(user, 200, res);
 });
 
 exports.protect = catchAsync(async (req, res, next) => {
@@ -113,16 +113,40 @@ exports.forgotPassword = catchAsync(async (req, res, next) => {
   )}/api/v1/users/resetPassword/${resetToken}`;
 
   const msg = `Forgot Password? Submit a PATCH request with your new password and passwordConfirm to : ${resetURL}.\n If you did not forget the password then please ignore this email`;
-});
-try {
-} catch (err) {
-  user.passwordReset;
-}
+  try {
+    await sendEmail({
+      email: user.email,
+      subject: `password reset token (valid for 10 mins)`,
+      message,
+    });
 
-/* exports.resetPassword = catchAsync(async (req, res) => {
-  const user = await User.findOne({ email: req.body.email });
-  //console.log('inside   reset password' + user);
+    createSendToken(user, 200, res);
+  } catch (err) {
+    user.passwordResetToken = undefined;
+    user.passwordResetExpires = undefined;
+    await user.save({ validateBeforeSave: false });
 
-  const resetToken = user.createPasswordResetToken();
+    return next(
+      new AppError('There was an error sending email. Try again', 500)
+    );
+  }
 });
- */
+
+exports.resetPassword = catchAsync(async (req, res, next) => {
+  const hashToken = crypto
+    .createHash('sha256')
+    .update(req.params.token)
+    .digest('hex');
+  const user = await User.findOne({
+    passwordResetToken: hashToken,
+    passwordResetToken: { $gt: Date.now() },
+  });
+
+  user.password = req.body.password;
+  user.passwordConfirm = req.body.passwordConfirm;
+  user.passwordResetToken = undefined;
+  user.passwordResetExpires = undefined;
+
+  await user.save();
+  createSendToken(user, 200, res);
+});
