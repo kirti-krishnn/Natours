@@ -150,3 +150,20 @@ exports.resetPassword = catchAsync(async (req, res, next) => {
   await user.save();
   createSendToken(user, 200, res);
 });
+
+exports.changePassword = catchAsync(async (req, res, next) => {
+  const user = await User.findById(req.user.id).select('+password');
+
+  if (!req.body.password && !req.body.passwordConfirm) {
+    next(new AppError('Please provide the data for password Change', 404));
+  }
+
+  if (!(await User.passwordCompare(req.body.password, user.password))) {
+    next(new AppError('the password enetered does not match', 404));
+  }
+  user.password = req.body.password;
+  user.passwordConfirm = req.body.passwordConfirm;
+
+  await user.save();
+  createSendToken(user, 200, res);
+});
